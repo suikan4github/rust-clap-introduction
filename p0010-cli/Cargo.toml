@@ -1,0 +1,8 @@
+[package]
+name = "clap_test"
+version = "0.1.0"
+authors = ["Seiichi Horie<mail.example.com>"]
+edition = "2021"
+
+[dependencies]
+clap = { version = "*", features = ["derive"] }
