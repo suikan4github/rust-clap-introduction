@@ -1,5 +1,5 @@
 [package]
-name = "clap_test"
+name = "airplane"
 version = "0.1.0"
 authors = ["Seiichi Horie<mail.example.com>"]
 edition = "2021"
