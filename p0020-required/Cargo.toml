@@ -1,0 +1,8 @@
+[package]
+name = "airplane"
+version = "0.2.0"
+authors = ["Seiichi Horie<mail.example.com>"]
+edition = "2021"
+
+[dependencies]
+clap = { version = "*", features = ["derive"] }
