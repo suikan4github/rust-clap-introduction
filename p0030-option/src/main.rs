@@ -17,6 +17,10 @@ struct Cli {
     // 省略できないコマンドライン文字列。
     #[arg(required = true)]
     name: String,
+
+    // 省略可能なコマンドライン文字列。
+    #[arg(short, long, default_value = "")]
+    manufacturer: String,
 }
 
 fn main() {
