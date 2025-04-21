@@ -4,21 +4,24 @@
 
 ## ソースコード
 
-コマンドライン構造体の要素に`#[clap(required = true)]`属性を付けると省略不能な引数として扱われる。
-また、この場合の引数の値は文字列として処理される。
+コマンドライン構造体の要素に`#[clap()]`属性を付け、かつ`required = true`を指定しない場合には省略可能な引数として扱われる。
+特に指定しない場合、引数の値は文字列として処理される。
 
-```
+```rust:main.rs
 #[derive(Parser, Debug)]
 #[command(version)]
 struct Cli {
     #[clap(help = "Name of airclaft", required = true)]
     name: String,
+
+    #[clap(short, long, default_value = "", help = "Manufacturer of airclaft")]
+    manufacturer: String,
 }
 ```
 'arg'属性の'required'は、ユーザーに見えない部分で生成されるプログラムが呼び出すメソッド名である。
 つまりここでは、`required(true)`メソッドを呼ぶことを指示しており、これによってname文字列に対応する引数は省略が許されないとわかる。
 
-`arg`属性の`help`メソッドはヘルプ文字列を指定する。
+`clap`属性の`help`メソッドはヘルプ文字列を指定する。
 この文字列はコマンドラインからhelpオプションを指定した際、この引数の情報として表示される。
 ## 実行
 
