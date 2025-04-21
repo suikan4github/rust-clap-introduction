@@ -48,7 +48,7 @@ Cli { name: "B747" }
 また、`<NAME>`の横に`help`メソッドに与えたヘルプ文字列が表示されている。
 ```sh
 $ cargo run -q -- -h
-Usage: airplane [OPTIONS] <NAME>
+Usage: aircraft [OPTIONS] <NAME>
 
 Arguments:
   <NAME>  Name of airclaft

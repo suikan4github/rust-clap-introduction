@@ -9,7 +9,7 @@ clapクレートによるバージョン表示プログラム。次の二つの�
 Cargo.tomlは以下の通り。`[package]`の`version`は、プログラムの中で参照して実行時にバージョン情報として表示される。
 ```toml:Cargo.toml
 [package]
-name = "airplane"
+name = "aircraft"
 version = "0.1.0"
 authors = ["Seiichi Horie<mail.example.com>"]
 edition = "2021"
@@ -49,19 +49,19 @@ main()関数の以下の行は、コマンドライン引数を解析してCli�
 ## 実行
 `-V`または`--version`オプションによりプログラムのバージョンを表示することができる。バージョンはCargo.tomlから抽出したもの。
 ```
-$ airplane -V
-airplane 0.1.0
+$ aircraft -V
+aircraft 0.1.0
 ```
 コマンド名の代わりに`cargo run -q --`の後ろにオプションを付けても、同じ結果を得られる。
 ```
 cargo run -q -- -V
-airplane 0.1.0
+aircraft 0.1.0
 ```
 `-h`または`--help`オプションを付けると、ヘルプメッセージが表示される。これは暗黙に実装された機能である。
 
 ```
 $ cargo run -q -- -h
-Usage: airplane
+Usage: aircraft
 
 Options:
   -h, --help     Print help

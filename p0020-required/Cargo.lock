@@ -3,7 +3,7 @@
 version = 3
 
 [[package]]
-name = "airplane"
+name = "aircraft"
 version = "0.2.0"
 dependencies = [
  "clap",
