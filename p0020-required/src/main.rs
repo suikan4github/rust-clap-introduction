@@ -15,7 +15,7 @@ use clap::Parser;
 // このプログラムではユーザー定義の構造体は空である。
 struct Cli {
     // 省略できないコマンドライン文字列。
-    #[arg(help = "Name of airclaft", required = true)]
+    #[clap(help = "Name of airclaft", required = true)]
     name: String,
 }
 

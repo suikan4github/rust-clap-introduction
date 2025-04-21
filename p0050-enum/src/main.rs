@@ -24,19 +24,19 @@ enum EngineType {
 // このプログラムではユーザー定義の構造体は空である。
 struct Cli {
     // 省略できないコマンドライン文字列。
-    #[arg(required = true)]
+    #[clap(required = true)]
     name: String,
 
     // 省略可能なコマンドライン文字列。
-    #[arg(short, long, default_value = "")]
+    #[clap(short, long, default_value = "")]
     manufacturer: String,
 
     // 文字列以外のコマンドライン引数をパースする。
-    #[arg(short, long, default_value_t = 1904)]
+    #[clap(short, long, default_value_t = 1904)]
     first_flight_year: i32,
 
     // enum型のコマンドライン引数をパースする。
-    #[arg(short, long, value_enum, default_value_t = EngineType::Reciprocating)]
+    #[clap(short, long, value_enum, default_value_t = EngineType::Reciprocating)]
     engine_type: EngineType,
 }
 

@@ -4,15 +4,18 @@
 
 ## ソースコード
 
-コマンドライン構造体の要素に`#[arg(required = true)]`属性を付けると省略不能な引数として扱われる。
+コマンドライン構造体の要素に`#[clap(required = true)]`属性を付けると省略不能な引数として扱われる。
 また、この場合の引数の値は文字列として処理される。
 
 ```
 #[derive(Parser, Debug)]
 #[command(version)]
 struct Cli {
-    #[arg(help = "Name of airclaft", required = true)]
+    #[clap(help = "Name of airclaft", required = true)]
     name: String,
+
+    #[clap(short, long, default_value = "", help = "Manufacturer of airclaft")]
+    manufacturer: String,
 }
 ```
 'arg'属性の'required'は、ユーザーに見えない部分で生成されるプログラムが呼び出すメソッド名である。
