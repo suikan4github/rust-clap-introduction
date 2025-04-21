@@ -22,6 +22,7 @@ struct Cli {
     #[arg(short, long, default_value = "")]
     manufacturer: String,
 
+    // 文字列以外のコマンドライン引数をパースする。
     #[arg(short, long, default_value_t = 1904)]
     first_flight_year: i32,
 }
