@@ -19,8 +19,8 @@ struct Cli {
     name: String,
 
     // 省略可能なコマンドライン文字列。
-    #[clap(short, long, default_value = "", help = "Manufacturer of airclaft")]
-    manufacturer: String,
+    #[clap(short, long, help = "Manufacturer of airclaft")]
+    manufacturer: Option<String>,
 }
 
 fn main() {

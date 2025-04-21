@@ -18,16 +18,24 @@ struct Cli {
     manufacturer: String,
 }
 ```
-'arg'属性の'required'は、ユーザーに見えない部分で生成されるプログラムが呼び出すメソッド名である。
-つまりここでは、`required(true)`メソッドを呼ぶことを指示しており、これによってname文字列に対応する引数は省略が許されないとわかる。
+`clap()`属性に`short`および`long`を指定することで、clapはメンバー変数名から類推して短いオプションと長いオプションを生成する。この場合は以下のようになる。
 
-`clap`属性の`help`メソッドはヘルプ文字列を指定する。
-この文字列はコマンドラインからhelpオプションを指定した際、この引数の情報として表示される。
+| メンバー変数名   | 短いオプション | 長いオプション |
+|-----          |---------   |------      |
+| manufacturer | -m          | --manufacturer |
+
+`default_value`の値は空文字列でも構わない。`default_value`そのものを指定しない場合、そのオプションを省略すると値はNONEになる。そのため、メンバー変数の型は`String`ではなく`Option<String>`にしなければならない。
+
+```rust
+    #[clap(short, long, help = "Manufacturer of airclaft")]
+    manufacturer: Option<String>,
+```
+
 ## 実行
 
 引数を省略するとプログラムはエラー終了する。
 
-```
+```sh
 $ cargo run -q -- B747
 Cli { name: "B747" }
 ```
@@ -38,14 +46,15 @@ Cli { name: "B747" }
 `<HELP>`はコマンド名の横に表示されており、省略不能であることがわかる。
 `NAME`はコンパイラが`[Derive]`によってソースコードの要素名から類推した引数名である。
 また、`<NAME>`の横に`help`メソッドに与えたヘルプ文字列が表示されている。
-```
+```sh
 $ cargo run -q -- -h
-Usage: airplane <NAME>
+Usage: airplane [OPTIONS] <NAME>
 
 Arguments:
   <NAME>  Name of airclaft
 
 Options:
-  -h, --help     Print help
-  -V, --version  Print version
+  -m, --manufacturer <MANUFACTURER>  Manufacturer of airclaft
+  -h, --help                         Print help
+  -V, --version                      Print version
 ```
