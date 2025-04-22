@@ -33,19 +33,15 @@ struct Cli {
 
 ## 実行
 
-引数を省略するとプログラムはエラー終了する。
+引数を`-m`とともに与えると、manufacturerメンバー変数にその引数が文字列として束縛される。省略した場合は`default_value`として指定した空文字列が束縛される。
 
 ```sh
-$ cargo run -q -- B747
-Cli { name: "B747" }
+$ cargo run -q  -- B747 -m Boeing
+Cli { name: "B747", manufacturer: "Boeing" }
 ```
 
-ヘルプ画面では、引数名は`<NAME>`と表示される。
+ヘルプ画面には、`-m`および`--manufacturer`が追加される。
 
-
-`<HELP>`はコマンド名の横に表示されており、省略不能であることがわかる。
-`NAME`はコンパイラが`[Derive]`によってソースコードの要素名から類推した引数名である。
-また、`<NAME>`の横に`help`メソッドに与えたヘルプ文字列が表示されている。
 ```sh
 $ cargo run -q -- -h
 Usage: aircraft [OPTIONS] <NAME>
