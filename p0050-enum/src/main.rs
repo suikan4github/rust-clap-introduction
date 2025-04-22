@@ -28,15 +28,21 @@ struct Cli {
     name: String,
 
     // 省略可能なコマンドライン文字列。
-    #[clap(short, long, default_value = "")]
+    #[clap(short, long, default_value = "", help = "Manufacturer of airclaft")]
     manufacturer: String,
 
     // 文字列以外のコマンドライン引数を解析する。
-    #[clap(short, long, default_value_t = 1904)]
+    #[clap(
+        short,
+        long,
+        default_value_t = 1904,
+        help = "First flight year of airclaft"
+    )]
     first_flight: i32,
 
     // enum型のコマンドライン引数を解析する。
-    #[clap(short, long, value_enum, default_value_t = EngineType::Reciprocating)]
+    #[clap(short, long, value_enum, default_value_t = EngineType::Reciprocating,
+        help = "Engine type")]
     engine_type: EngineType,
 }
 
