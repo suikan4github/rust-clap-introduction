@@ -33,7 +33,7 @@ struct Cli {
 
     // 文字列以外のコマンドライン引数を解析する。
     #[clap(short, long, default_value_t = 1904)]
-    first_flight_year: i32,
+    first_flight: i32,
 
     // enum型のコマンドライン引数を解析する。
     #[clap(short, long, value_enum, default_value_t = EngineType::Reciprocating)]
