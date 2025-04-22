@@ -24,7 +24,7 @@ struct Cli {
 `clap`属性の`help`メソッドはヘルプ文字列を指定する。
 この文字列はコマンドラインからhelpオプションを指定した際、この引数の情報として表示される。
 
-なお、上の例でnameメンバー変数の型を`Option<String>`にした場合、clapは引数を省略可能にするので注意が必要である。
+なお、上の例でnameフィールドの型を`Option<String>`にした場合、clapは引数を省略可能にするので注意が必要である。
 
 ```rust
     #[clap(help = "Name of airclaft")]

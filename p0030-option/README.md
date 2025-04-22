@@ -18,13 +18,13 @@ struct Cli {
     manufacturer: String,
 }
 ```
-`clap()`属性に`short`および`long`を指定することで、clapはメンバー変数名から類推して短いオプションと長いオプションを生成する。この場合は以下のようになる。
+`clap()`属性に`short`および`long`を指定することで、clapはフィールド名から類推して短いオプションと長いオプションを生成する。この場合は以下のようになる。
 
-| メンバー変数名   | 短いオプション | 長いオプション |
+| フィールド名   | 短いオプション | 長いオプション |
 |-----          |---------   |------      |
 | manufacturer | -m          | --manufacturer |
 
-`default_value`の値は空文字列でも構わない。`default_value`そのものを指定しない場合、そのオプションを省略すると値はNONEになる。そのため、メンバー変数の型は`String`ではなく`Option<String>`にしなければならない。
+`default_value`の値は空文字列でも構わない。`default_value`そのものを指定しない場合、そのオプションを省略すると値はNONEになる。そのため、フィールドの型は`String`ではなく`Option<String>`にしなければならない。
 
 ```rust
     #[clap(short, long, help = "Manufacturer of airclaft")]
@@ -33,7 +33,7 @@ struct Cli {
 
 ## 実行
 
-引数を`-m`とともに与えると、manufacturerメンバー変数にその引数が文字列として束縛される。省略した場合は`default_value`として指定した空文字列が束縛される。
+引数を`-m`とともに与えると、manufacturerフィールドにその引数が文字列として束縛される。省略した場合は`default_value`として指定した空文字列が束縛される。
 
 ```sh
 $ cargo run -q  -- B747 -m Boeing

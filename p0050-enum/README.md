@@ -22,7 +22,7 @@ enum EngineType {
     Turbofan,
 }
 ```
-最後にコマンドライン引数構造体に、先に宣言した列挙型のメンバー関数を追加する。この関数には`[clap]`属性で、`value_enum`を指定することで、platに列挙型の値の解析を行うよう指示する。
+最後にコマンドライン引数構造体に、先に宣言した列挙型のフィールドを追加する。この関数には`[clap]`属性で、`value_enum`を指定することで、platに列挙型の値の解析を行うよう指示する。
 
 ```rust:main.rs
 #[derive(Parser, Debug)]
@@ -48,14 +48,14 @@ struct Cli {
     engine_type: EngineType,
 }
 ```
-上の例では`engin_type`メンバー変数が列挙型`EnginType`である。
+上の例では`engin_type`フィールドが列挙型`EnginType`である。
 
 clapはこの変数名から類推して`-e`および`--engine-type`オプションを作り出す。引数は列挙型のリテラルと同じ文字列である。
 
 
 ## 実行
 
-引数を`-e`とともに与えると、その引数に対応する列挙型の値がengine_typeメンバー変数に束縛される。省略した場合は`default_value`として指定した`Reciprocating`が束縛される。
+引数を`-e`とともに与えると、その引数に対応する列挙型の値がengine_typeフィールドに束縛される。省略した場合は`default_value`として指定した`Reciprocating`が束縛される。
 
 ```sh
 $ cargo run -q -- B747 -m Boeing -f 1964 -e turbofan
