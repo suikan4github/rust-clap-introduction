@@ -13,7 +13,8 @@ use clap::Parser;
 #[command(version, author, long_about)]
 /// Demonstration of the simple applicaiton with version and help.
 ///
-/// Without expliciit programming, The clap crate add -h and --help options.
+/// Without expliciit programming,
+/// the clap crate add -h and --help options.
 /// This is very convinient.
 struct Cli {}
 
