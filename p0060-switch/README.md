@@ -70,6 +70,8 @@ Cli { name: "B747", manufacturer: "Boeing", first_flight: 1964, engine_type: Tur
 ```
 なお、`-e`オプションに与えることのできる引数は、`-h`で表示される文字列だけである。この文字列は列挙型のリテラルそのものとは限らないので注意する。
 
+`-h`オプションを与えて表示すると、`-p`オプションには引数が無いことがわかる。
+
 ```sh
 $ cargo run -q -- -h
 Usage: aircraft [OPTIONS] <NAME>
@@ -81,6 +83,7 @@ Options:
   -m, --manufacturer <MANUFACTURER>  Manufacturer of airclaft [default: ]
   -f, --first-flight <FIRST_FLIGHT>  First flight year of airclaft [default: 1904]
   -e, --engine-type <ENGINE_TYPE>    Engine type [default: reciprocating] [possible values: reciprocating, turboprop, turbojet, turbofan]
+  -p, --pretty-print                 Specify pretty print mode
   -h, --help                         Print help
   -V, --version                      Print version
 ```
