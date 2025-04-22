@@ -31,7 +31,7 @@ struct Cli {
 
 ## 実行
 
-引数を`-f`とともに与えると、first_flightメンバー変数にその引数が文字列として束縛される。省略した場合は`default_value`として指定した1906が束縛される。
+引数を`-f`とともに与えると、first_flightメンバー変数にその引数が整数として束縛される。省略した場合は`default_value`として指定した1906が束縛される。
 
 ```sh
 $ cargo run -q  -- B747 -m Boeing -f 1964
