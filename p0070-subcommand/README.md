@@ -28,13 +28,13 @@ enum EngineType {
 #[derive(Parser, Debug)]
 #[command(version)]
 struct Cli {
-    #[clap(help = "Name of airclaft")]
+    #[arg(help = "Name of airclaft")]
     name: String,
 
-    #[clap(short, long, default_value = "", help = "Manufacturer of airclaft")]
+    #[arg(short, long, default_value = "", help = "Manufacturer of airclaft")]
     manufacturer: String,
 
-    #[clap(
+    #[arg(
         short,
         long,
         default_value_t = 1904,
@@ -43,7 +43,7 @@ struct Cli {
     first_flight: i32,
 
     // enum型のコマンドライン引数を解析する。
-    #[clap(short, long, value_enum, default_value_t = EngineType::Reciprocating,
+    #[arg(short, long, value_enum, default_value_t = EngineType::Reciprocating,
         help = "Engine type")]
     engine_type: EngineType,
 }

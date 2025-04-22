@@ -4,17 +4,17 @@
 
 ## ソースコード
 
-コマンドライン構造体の要素に`#[clap()]`属性を付け、かつ`required = true`を指定しない場合には省略可能な引数として扱われる。
+コマンドライン構造体の要素に`#[arg()]`属性を付け、かつ`required = true`を指定しない場合には省略可能な引数として扱われる。
 特に指定しない場合、引数の値は文字列として処理される。
 
 ```rust:main.rs
 #[derive(Parser, Debug)]
 #[command(version)]
 struct Cli {
-    #[clap(help = "Name of airclaft", required = true)]
+    #[arg(help = "Name of airclaft", required = true)]
     name: String,
 
-    #[clap(short, long, default_value = "", help = "Manufacturer of airclaft")]
+    #[arg(short, long, default_value = "", help = "Manufacturer of airclaft")]
     manufacturer: String,
 }
 ```
@@ -27,7 +27,7 @@ struct Cli {
 `default_value`の値は空文字列でも構わない。`default_value`そのものを指定しない場合、そのオプションを省略すると値はNONEになる。そのため、フィールドの型は`String`ではなく`Option<String>`にしなければならない。
 
 ```rust
-    #[clap(short, long, help = "Manufacturer of airclaft")]
+    #[arg(short, long, help = "Manufacturer of airclaft")]
     manufacturer: Option<String>,
 ```
 

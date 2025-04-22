@@ -11,10 +11,10 @@
 #[derive(Parser, Debug)]
 #[command(version)]
 struct Cli {
-    #[clap(help = "Name of airclaft")]
+    #[arg(help = "Name of airclaft")]
     name: String,
 
-    #[clap(short, long, default_value = "", help = "Manufacturer of airclaft")]
+    #[arg(short, long, default_value = "", help = "Manufacturer of airclaft")]
     manufacturer: String,
 }
 ```
@@ -27,7 +27,7 @@ struct Cli {
 なお、上の例でnameフィールドの型を`Option<String>`にした場合、clapは引数を省略可能にするので注意が必要である。
 
 ```rust
-    #[clap(help = "Name of airclaft")]
+    #[arg(help = "Name of airclaft")]
     name: Option<String>,
 ```
 

@@ -9,13 +9,13 @@
 #[derive(Parser, Debug)]
 #[command(version)]
 struct Cli {
-    #[clap(help = "Name of airclaft", required = true)]
+    #[arg(help = "Name of airclaft", required = true)]
     name: String,
 
-    #[clap(short, long, default_value = "", help = "Manufacturer of airclaft")]
+    #[arg(short, long, default_value = "", help = "Manufacturer of airclaft")]
     manufacturer: String,
 
-    #[clap(
+    #[arg(
         short,
         long,
         default_value_t = 1904,

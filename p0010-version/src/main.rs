@@ -10,9 +10,11 @@ use clap::Parser;
 // derive(parser)属性を使ってコマンドライン引数の解析のためのコードを自動生成する。
 #[derive(Parser, Debug)]
 // command(version)属性を使って、コマンドラインに -V --version オプションを追加する。
-#[command(version)]
-// コマンドライン引数を解析するための構造体を定義する。
-// このプログラムではユーザー定義の構造体は空である。
+#[command(version, author, long_about)]
+/// Demonstration of the simple applicaiton with version and help.
+///
+/// Without expliciit programming, The clap crate add -h and --help options.
+/// This is very convinient.
 struct Cli {}
 
 fn main() {

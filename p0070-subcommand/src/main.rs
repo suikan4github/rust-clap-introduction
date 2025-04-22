@@ -23,7 +23,7 @@ enum EngineType {
 // コマンドライン引数を解析するための構造体を定義する。
 struct Cli {
     // コマンドライン引数のサブコマンドを定義する。
-    #[clap(subcommand)]
+    #[command(subcommand)]
     command: Commands,
 }
 
@@ -32,15 +32,15 @@ struct Cli {
 enum Commands {
     Real {
         // 省略できないコマンドライン文字列。
-        #[clap(help = "Name of airclaft")]
+        #[arg(help = "Name of airclaft")]
         name: String,
 
         // 省略可能なコマンドライン文字列。
-        #[clap(short, long, default_value = "", help = "Manufacturer of airclaft")]
+        #[arg(short, long, default_value = "", help = "Manufacturer of airclaft")]
         manufacturer: String,
 
         // 文字列以外のコマンドライン引数を解析する。
-        #[clap(
+        #[arg(
             short,
             long,
             default_value_t = 1904,
@@ -49,21 +49,21 @@ enum Commands {
         first_flight: i32,
 
         // enum型のコマンドライン引数を解析する。
-        #[clap(short, long, value_enum, default_value_t = EngineType::Reciprocating,
+        #[arg(short, long, value_enum, default_value_t = EngineType::Reciprocating,
         help = "Engine type")]
         engine_type: EngineType,
 
         // 論理型のコマンドライン引数を解析する。このオプションはスイッチとして機能する。
-        #[clap(short, long, help = "Specify pretty print mode")]
+        #[arg(short, long, help = "Specify pretty print mode")]
         pretty_print: bool,
     },
     Idea {
         // 省略できないコマンドライン文字列。
-        #[clap(help = "Name of airclaft")]
+        #[arg(help = "Name of airclaft")]
         name: String,
 
         // 省略可能なコマンドライン文字列。
-        #[clap(short, long, default_value = "", help = "Designer of airclaft")]
+        #[arg(short, long, default_value = "", help = "Designer of airclaft")]
         designer: String,
     },
 }
