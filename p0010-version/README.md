@@ -22,7 +22,7 @@ clap = { version = "4.*", features = ["derive"] }
 clapのderive機能はソースコードから引数の名前や利用方法を類推する機能で、プログラムを大幅に簡素化する。
 
 ## ソースコード
-main.rsの冒頭では`clap::Parser`のインポートを宣言する。
+main.rsの冒頭では`clap::Parser`トレイトのインポートを宣言する。
 ```rust:main.rs
 use clap::Parser;
 ```
@@ -31,6 +31,11 @@ use clap::Parser;
 ```rust:main.rs
 #[derive(Parser, Debug)]
 #[command(version)]
+/// Demonstration of the simple applicaiton with version and help.
+///
+/// Without expliciit programming, the clap crate add -h and --help options.
+/// The added help display is well formatted and easy to read.
+/// In addtion, the programmer can add -V and --version options explicitly.
 struct Cli {}
 ```
 この構造体にはclapからふたつの属性が付加されている。
@@ -41,6 +46,7 @@ struct Cli {}
 
 ヘルプ機能に関してはデフォルトでclapが実装するのでプログラマは何もしなくてよい。
 
+Cli{}構造体にDocコメントが付けられていることに注意。このDocコメントはclapによってaboutおよびlong_about情報として使用される。about情報として扱われるのはDocコメントの最初の行である。1行開けて3行目からはlong_about情報として扱われる。
 
 main()関数の以下の行は、コマンドライン引数を解析（パース）してCli構造体型の変数cliを生成している。
 ```rust:main.rs
@@ -57,13 +63,33 @@ aircraft 0.1.0
 cargo run -q -- -V
 aircraft 0.1.0
 ```
-`-h`または`--help`オプションを付けると、ヘルプメッセージが表示される。これは暗黙に実装された機能である。
+`-h`オプションをつけるとヘルプメッセージが表示される。これは暗黙に実装された機能である。冒頭にabout情報が表示されている。
 
 ```
 $ cargo run -q -- -h
+Demonstration of the simple applicaiton with version and help
+
 Usage: aircraft
 
 Options:
-  -h, --help     Print help
+  -h, --help     Print help (see more with '--help')
   -V, --version  Print version
+```
+
+`--help`オプションをつけると冒頭にlong_aboutも表示される。
+
+```
+$ cargo run -q -- --help
+Demonstration of the simple applicaiton with version and help.
+
+Without expliciit programming, the clap crate add -h and --help options. The added help display is well formatted and easy to read. In addtion, the programmer can add -V and --version options explicitly.
+
+Usage: aircraft
+
+Options:
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -V, --version
+          Print version
 ```
