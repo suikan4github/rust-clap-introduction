@@ -1,27 +1,11 @@
-# 列挙型のための引数解析
+# 引数を持たないスイッチ
 
-列挙型に対応する引数の解析（パース）機能を追加する。
+ブール型を導入してスイッチを実装する。
 
-CLIから文字列として与えられた引数を、対応する列挙型にマッピングする事が狙いである。
+スイッチは引数を持たないオプションである。何らかの機能をオンにするために対応するスイッチをコマンドラインで指定する。
 
 ## ソースコード
 
-この例題はこれまでより少し大がかりな変更が入る。
-
-まず、clapクレートのインポートが変わる。これまで`clap::Parser`のみをインポートしていたが、この例題では`clap::ValueEnum`も必要になる。
-```rust:main.rs
-use clap::{Parser, ValueEnum};
-```
-次に、列挙型の宣言をする。この列挙型に対応する引数を解析するので、`derive`属性に`ValueEnum`を指定しておく。これで、clapは文字列を受け取ってこの列挙型の値にマッピングさせることを知る。
-```rust:main.rs
-#[derive(Debug, Clone, ValueEnum)]
-enum EngineType {
-    Reciprocating,
-    Turboprop,
-    Turbojet,
-    Turbofan,
-}
-```
 最後にコマンドライン引数構造体に、先に宣言した列挙型のフィールドを追加する。この関数には`[clap]`属性で、`value_enum`を指定することで、platに列挙型の値の解析を行うよう指示する。
 
 ```rust:main.rs
@@ -46,16 +30,39 @@ struct Cli {
     #[clap(short, long, value_enum, default_value_t = EngineType::Reciprocating,
         help = "Engine type")]
     engine_type: EngineType,
+
+    #[clap(short, long, help = "Specify pretty print mode")]
+    pretty_print: bool,
 }
 ```
-上の例では`engin_type`フィールドが列挙型`EnginType`である。
+上の例では`pretty_print`フィールドが論理型である。
 
-clapはこの変数名から類推して`-e`および`--engine-type`オプションを作り出す。引数は列挙型のリテラルと同じ文字列である。
+clapはこの変数名から類推して`-p`および`--pretty-print`オプションを作り出す。引数は不要である。`-p`または`--pretty-print`を指定した場合、`pretty_print`フィールドには`true`が束縛される。そうでない場合は、`false`が束縛される。
+
+main()関数側では、このスイッチの値に応じて処理を変更する。
+
+```rust:main.rs
+fn main() {
+    // コマンドライン引数を解析する。
+    let cli = Cli::parse();
+
+    if cli.pretty_print {
+        // コマンドライン引数をきれいに表示する。
+        println!("Name         {:#?}", cli.name);
+        println!("Manufacturer {:#?}", cli.manufacturer);
+        println!("First flight {:#?}", cli.first_flight);
+        println!("Engine       {:#?}", cli.engine_type);
+    } else {
+        // コマンドライン引数をそのまま表示する。
+        println!("{:?}", cli);
+    }
+}
+```
 
 
 ## 実行
 
-引数を`-e`とともに与えると、その引数に対応する列挙型の値がengine_typeフィールドに束縛される。省略した場合は`default_value`として指定した`Reciprocating`が束縛される。
+引数を`-p`とともに与えると、その引数に対応する列挙型の値がengine_typeフィールドに束縛される。省略した場合は`default_value`として指定した`Reciprocating`が束縛される。
 
 ```sh
 $ cargo run -q -- B747 -m Boeing -f 1964 -e turbofan

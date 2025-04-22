@@ -44,12 +44,24 @@ struct Cli {
     #[clap(short, long, value_enum, default_value_t = EngineType::Reciprocating,
         help = "Engine type")]
     engine_type: EngineType,
+
+    // 論理型のコマンドライン引数を解析する。このオプションはスイッチとして機能する。
+    #[clap(short, long, help = "Specify pretty print mode")]
+    pretty_print: bool,
 }
 
 fn main() {
     // コマンドライン引数を解析する。
     let cli = Cli::parse();
 
-    // コマンドライン引数を解析した結果を表示する。
-    println!("{:?}", cli);
+    if cli.pretty_print {
+        // コマンドライン引数をきれいに表示する。
+        println!("Name         {:#?}", cli.name);
+        println!("Manufacturer {:#?}", cli.manufacturer);
+        println!("First flight {:#?}", cli.first_flight);
+        println!("Engine       {:#?}", cli.engine_type);
+    } else {
+        // コマンドライン引数をそのまま表示する。
+        println!("{:?}", cli);
+    }
 }
