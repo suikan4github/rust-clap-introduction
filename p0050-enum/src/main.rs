@@ -24,7 +24,7 @@ enum EngineType {
 // このプログラムではユーザー定義の構造体は空である。
 struct Cli {
     // 省略できないコマンドライン文字列。
-    #[clap(required = true)]
+    #[clap(help = "Name of airclaft")]
     name: String,
 
     // 省略可能なコマンドライン文字列。
