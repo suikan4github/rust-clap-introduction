@@ -4,14 +4,14 @@
 
 ## ソースコード
 
-コマンドライン構造体の要素に`#[clap(required = true)]`属性を付けると省略不能な引数として扱われる。
+コマンドライン構造体の要素に`clap`属性で省略時の値を指定しない場合には、省略不能な引数として扱われる。
 また、この場合の引数の値は文字列として処理される。
-
+なお、`clap`属性に`required = true`を追加した場合も省略不能な引数として扱われる。
 ```
 #[derive(Parser, Debug)]
 #[command(version)]
 struct Cli {
-    #[clap(help = "Name of airclaft", required = true)]
+    #[clap(help = "Name of airclaft")]
     name: String,
 
     #[clap(short, long, default_value = "", help = "Manufacturer of airclaft")]
@@ -23,6 +23,14 @@ struct Cli {
 
 `clap`属性の`help`メソッドはヘルプ文字列を指定する。
 この文字列はコマンドラインからhelpオプションを指定した際、この引数の情報として表示される。
+
+なお、上の例でnameメンバー変数の型を`Option<String>`にした場合、clapは引数を省略可能にするので注意が必要である。
+
+```rust
+    #[clap(help = "Name of airclaft")]
+    name: Option<String>,
+```
+
 ## 実行
 
 引数を省略するとプログラムはエラー終了する。
@@ -32,10 +40,8 @@ $ cargo run -q -- B747
 Cli { name: "B747" }
 ```
 
-ヘルプ画面では、引数名は`<NAME>`と表示される。
+ヘルプ画面では、引数名は`<NAME>`と表示される。`<>`は省略不能であることを示す記号である。
 
-
-`<HELP>`はコマンド名の横に表示されており、省略不能であることがわかる。
 `NAME`はコンパイラが`[Derive]`によってソースコードの要素名から類推した引数名である。
 また、`<NAME>`の横に`help`メソッドに与えたヘルプ文字列が表示されている。
 ```
