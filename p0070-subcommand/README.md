@@ -24,34 +24,95 @@ enum EngineType {
 ```
 最後にコマンドライン引数構造体に、先に宣言した列挙型のフィールドを追加する。この関数には`#[arg]`属性で、`value_enum`を指定することで、platに列挙型の値の解析を行うよう指示する。
 
-```rust:main.rs
+```rust
 #[derive(Parser, Debug)]
 #[command(version)]
 struct Cli {
-    #[arg(help = "Name of airclaft")]
-    name: String,
-
-    #[arg(short, long, default_value = "", help = "Manufacturer of airclaft")]
-    manufacturer: String,
-
-    #[arg(
-        short,
-        long,
-        default_value_t = 1904,
-        help = "First flight year of airclaft"
-    )]
-    first_flight: i32,
-
-    // enum型のコマンドライン引数を解析する。
-    #[arg(short, long, value_enum, default_value_t = EngineType::Reciprocating,
-        help = "Engine type")]
-    engine_type: EngineType,
+    // コマンドライン引数のサブコマンドを定義する。
+    #[command(subcommand)]
+    /// Subcommand of aircraft.
+    command: Commands,
 }
 ```
 上の例では`engin_type`フィールドが列挙型`EnginType`である。
 
 clapはこの変数名から類推して`-e`および`--engine-type`オプションを作り出す。引数は列挙型のリテラルと同じ文字列である。
 
+
+```rust
+// derive(subcommand)属性を使って、コマンドライン引数の解析のためのコードを自動生成する。
+#[derive(Subcommand, Debug)]
+enum Commands {
+    Real {
+        #[arg()]
+        /// Name of aircraft.
+        name: String,
+
+        #[arg(short, long, default_value = "")]
+        /// Manufacturer of aircraft.
+        manufacturer: String,
+
+        #[arg(short, long, default_value_t = 1904)]
+        /// First flight year of aircraft.
+        first_flight: i32,
+
+        #[arg(short, long, value_enum, default_value_t = EngineType::Reciprocating,
+         )]
+        /// Engine type of aircraft.
+        engine_type: EngineType,
+
+        #[arg(short, long)]
+        /// Pretty print mode.
+        pretty_print: bool,
+    },
+    Idea {
+        #[arg()]
+        /// Name of aircraft.
+        name: String,
+
+        #[arg(short, long, default_value = "")]
+        /// Designer of aircraft.
+        designer: String,
+    },
+}
+
+```
+
+
+```rust
+fn main() {
+    // コマンドライン引数を解析する。
+    let cli = Cli::parse();
+
+    match cli.command {
+        Commands::Real {
+            name,
+            manufacturer,
+            first_flight,
+            engine_type,
+            pretty_print,
+        } => {
+            if pretty_print {
+                // コマンドライン引数をきれいに表示する。
+                println!("Name         {:#?}", name);
+                println!("Manufacturer {:#?}", manufacturer);
+                println!("First flight {:#?}", first_flight);
+                println!("Engine       {:#?}", engine_type);
+            } else {
+                // コマンドライン引数をそのまま表示する。
+                println!(
+                    " {} {} {:?} {:?}",
+                    name, manufacturer, first_flight, engine_type
+                );
+            }
+        }
+        Commands::Idea { name, designer } => {
+            println!("{} {}", name, designer);
+        }
+    }
+}
+
+```
 
 ## 実行
 

@@ -2,7 +2,6 @@
 // Cargo.tomlに以下を追加する。
 // [dependencies]
 // clap = { version = "4.0", features = ["derive"] }
-// clapのderive機能を使うために、クレートのバージョンを4.0以上にする必要がある。
 
 // clapクレートは、コマンドライン引数を解析するためのライブラリ。
 use clap::{Parser, Subcommand, ValueEnum};
@@ -21,9 +20,15 @@ enum EngineType {
 // command(version)属性を使って、コマンドラインに -V --version オプションを追加する。
 #[command(version)]
 // コマンドライン引数を解析するための構造体を定義する。
+// Doc コメントを使って、コマンドライン引数の説明をヘルプ情報に追加する。
+/// Demonstration of a switch argument.
+///
+/// By using bool field with #[arg()] attribute, the field becomes a switch artument.
+/// Switch doesn't have any value. If not specified, the field value is false.
 struct Cli {
     // コマンドライン引数のサブコマンドを定義する。
     #[command(subcommand)]
+    /// Subcommand of aircraft.
     command: Commands,
 }
 
@@ -31,39 +36,41 @@ struct Cli {
 #[derive(Subcommand, Debug)]
 enum Commands {
     Real {
-        // 省略できないコマンドライン文字列。
-        #[arg(help = "Name of airclaft")]
+        // 省略できないコマンドライン文字列。Docコメントはヘルプ情報に追加される。
+        #[arg()]
+        /// Name of aircraft.
         name: String,
 
         // 省略可能なコマンドライン文字列。
-        #[arg(short, long, default_value = "", help = "Manufacturer of airclaft")]
+        #[arg(short, long, default_value = "")]
+        /// Manufacturer of aircraft.
         manufacturer: String,
 
         // 文字列以外のコマンドライン引数を解析する。
-        #[arg(
-            short,
-            long,
-            default_value_t = 1904,
-            help = "First flight year of airclaft"
-        )]
+        #[arg(short, long, default_value_t = 1904)]
+        /// First flight year of aircraft.
         first_flight: i32,
 
         // enum型のコマンドライン引数を解析する。
         #[arg(short, long, value_enum, default_value_t = EngineType::Reciprocating,
-        help = "Engine type")]
+         )]
+        /// Engine type of aircraft.
         engine_type: EngineType,
 
         // 論理型のコマンドライン引数を解析する。このオプションはスイッチとして機能する。
-        #[arg(short, long, help = "Specify pretty print mode")]
+        #[arg(short, long)]
+        /// Pretty print mode.
         pretty_print: bool,
     },
     Idea {
         // 省略できないコマンドライン文字列。
-        #[arg(help = "Name of airclaft")]
+        #[arg()]
+        /// Name of aircraft.
         name: String,
 
         // 省略可能なコマンドライン文字列。
-        #[arg(short, long, default_value = "", help = "Designer of airclaft")]
+        #[arg(short, long, default_value = "")]
+        /// Designer of aircraft.
         designer: String,
     },
 }

@@ -29,12 +29,15 @@ enum EngineType {
 #[command(version)]
 struct Cli {
     #[arg()]
+    /// Name of aircraft.
     name: String,
 
     #[arg(short, long, default_value = "")]
+    /// Manufacturer of aircraft.
     manufacturer: String,
 
     #[arg(short, long, default_value_t = 1904)]
+    /// First flight year of aircraft.
     first_flight: i32,
 
     // enum型のコマンドライン引数を解析する。

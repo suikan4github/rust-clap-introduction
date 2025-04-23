@@ -10,9 +10,11 @@
 #[command(version)]
 struct Cli {
     #[arg()]
+    /// Name of aircraft.
     name: String,
 
     #[arg(short, long, default_value = "")]
+    /// Manufacturer of aircraft.
     manufacturer: String,
 
     // 文字列以外のコマンドライン引数を解析する。

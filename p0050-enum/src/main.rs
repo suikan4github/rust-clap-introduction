@@ -22,7 +22,7 @@ enum EngineType {
 // Doc コメントを使って、コマンドライン引数の説明をヘルプ情報に追加する。
 /// Demonstration of a typed arguments.
 ///
-/// By adding value_enum to #[arg()] attribute, the field becomes an tenum argument.
+/// By adding value_enum to #[arg()] attribute, the field becomes an enum argument.
 /// The target enum Type must be with attribute #[derive(ValueEnum)].
 struct Cli {
     // 省略できないコマンドライン文字列。Docコメントはヘルプ情報に追加される。

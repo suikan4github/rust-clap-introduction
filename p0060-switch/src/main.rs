@@ -20,10 +20,10 @@ enum EngineType {
 // command(version)属性を使って、コマンドラインに -V --version オプションを追加する。
 #[command(version)]
 // Doc コメントを使って、コマンドライン引数の説明をヘルプ情報に追加する。
-/// Demonstration of a typed arguments.
+/// Demonstration of a switch argument.
 ///
-/// By adding value_enum to #[arg()] attribute, the field becomes an tenum argument.
-/// The target enum Type must be with attribute #[derive(ValueEnum)].
+/// By using bool field with #[arg()] attribute, the field becomes a switch artument.
+/// Switch doesn't have any value. If not specified, the field value is false.
 struct Cli {
     // 省略できないコマンドライン文字列。Docコメントはヘルプ情報に追加される。
     #[arg()]

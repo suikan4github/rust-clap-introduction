@@ -12,6 +12,7 @@
 #[command(version)]
 struct Cli {
     #[arg()]
+    /// Name of aircraft
     name: String,
 
     // 省略可能なコマンドライン文字列。
