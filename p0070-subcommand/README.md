@@ -1,48 +1,42 @@
 # コマンドとサブコマンド
 
-列挙型に対応する引数の解析（パース）機能を追加する。
+より大規模なアプリケーションに向けて、clapにおけるコマンドとサブコマンドの解析（パース）について説明する。
 
-CLIから文字列として与えられた引数を、対応する列挙型にマッピングする事が狙いである。
+例えばgitを例に取ると、git cloneとgit commitは扱うオプションが異なる。
+```sh
+git clone <URL>
+git commit [-a] [-m <COMMENT>]
+```
+gitの例でいえば、`clone`や`commit`はコマンドであり、それらに続くコマンド固有のオプションがサブコマンドである。
+
+この例では、これまで作ったaircraftアプリケーションにコマンドを追加する。コマンドは`Real`と`Idea`である。
+
+`Real`コマンドはこれまで通り実在する飛行機の機種名と製造者や初飛行の時期を引数として受け取る。
+
+`Idea`コマンドは空想上の飛行機について、機種名とそれを考案した人物の名前を引数として受け取る。
 
 ## ソースコード
 
-この例題はこれまでより少し大がかりな変更が入る。
+この例題は列挙型への対応のときよりもさらに大がかりな変更が入る。コマンドとサブコマンドはそれなりの規模のアプリケーションのためのものなので、引数の解析が複雑になるのは仕方のないことである。
 
-まず、clapクレートのインポートが変わる。これまで`clap::Parser`のみをインポートしていたが、この例題では`clap::ValueEnum`も必要になる。
-```rust:main.rs
-use clap::{Parser, ValueEnum};
-```
-次に、列挙型の宣言をする。この列挙型に対応する引数を解析するので、`derive`属性に`ValueEnum`を指定しておく。これで、clapは文字列を受け取ってこの列挙型の値にマッピングさせることを知る。
-```rust:main.rs
-#[derive(Debug, Clone, ValueEnum)]
-enum EngineType {
-    Reciprocating,
-    Turboprop,
-    Turbojet,
-    Turbofan,
-}
-```
-最後にコマンドライン引数構造体に、先に宣言した列挙型のフィールドを追加する。この関数には`#[arg]`属性で、`value_enum`を指定することで、platに列挙型の値の解析を行うよう指示する。
-
+まず、clapクレートのインポートが変わる。これまでインポートしていたトレイトに加えて`clap::ValueEnum`が加わる。
 ```rust
-#[derive(Parser, Debug)]
-#[command(version)]
-struct Cli {
-    // コマンドライン引数のサブコマンドを定義する。
-    #[command(subcommand)]
-    /// Subcommand of aircraft.
-    command: Commands,
-}
+use clap::{Parser, Subcommand, ValueEnum};
 ```
-上の例では`engin_type`フィールドが列挙型`EnginType`である。
 
-clapはこの変数名から類推して`-e`および`--engine-type`オプションを作り出す。引数は列挙型のリテラルと同じ文字列である。
+コマンドは列挙型として実装し、サブコマンドはその列挙型の値に保持される構造体型として実装する。
 
+今回の例では`Real`および`Idea`というコマンドを使うので、列挙型の要素として`Real`と`Idea`を宣言する。そしてそれぞれが保持する値として構造体を宣言する。
 
+`Real`が保持する構造体については、これまで`Cli`構造体の中に記述したものをそのままそっくり持ってきている。`Idea`が保持する構造体については、`Name`フィールドと`designer`フィールドを新設している。
+
+この列挙型には`#[derive(Subcommand)]`を宣言していることに注意。この宣言によってclapにこの列挙型がコマンドライン引数のコマンドとサブコマンドであることを知らせている。
 ```rust
 // derive(subcommand)属性を使って、コマンドライン引数の解析のためのコードを自動生成する。
 #[derive(Subcommand, Debug)]
 enum Commands {
+  #[arg()]
+    /// Real aircraft.
     Real {
         #[arg()]
         /// Name of aircraft.
@@ -65,6 +59,7 @@ enum Commands {
         /// Pretty print mode.
         pretty_print: bool,
     },
+    /// Idea only.
     Idea {
         #[arg()]
         /// Name of aircraft.
@@ -77,7 +72,24 @@ enum Commands {
 }
 
 ```
+最後にコマンドライン引数構造体に、先に宣言したCommands列挙型のフィールドを追加する。
 
+```rust
+#[derive(Parser, Debug)]
+#[command(version)]
+struct Cli {
+    // コマンドライン引数のサブコマンドを定義する。
+    #[command(subcommand)]
+    command: Commands,
+}
+```
+上の例では`engin_type`フィールドが列挙型`EnginType`である。
+
+clapはこの変数名から類推して`-e`および`--engine-type`オプションを作り出す。引数は列挙型のリテラルと同じ文字列である。
+
+なお、この例ではコマンドをふたつ実装したが、自動的に`help`コマンドも実装される。
+
+解析したCli構造体型変数は列挙型変数である。したがって、実行時にはmatch文を使って対応することになる。
 
 ```rust
 fn main() {
@@ -101,13 +113,13 @@ fn main() {
             } else {
                 // コマンドライン引数をそのまま表示する。
                 println!(
-                    " {} {} {:?} {:?}",
+                    " {}, {}, {}, {:?}",
                     name, manufacturer, first_flight, engine_type
                 );
             }
         }
         Commands::Idea { name, designer } => {
-            println!("{} {}", name, designer);
+            println!("{}, {}", name, designer);
         }
     }
 }
@@ -116,27 +128,60 @@ fn main() {
 
 ## 実行
 
-引数を`-e`とともに与えると、その引数に対応する列挙型の値がengine_typeフィールドに束縛される。省略した場合は`default_value`として指定した`Reciprocating`が束縛される。
+コマンドとして`real`か`idea`を与えることで、異なる動作を実現できる。
 
-```sh
-$ cargo run -q -- B747 -m Boeing -f 1964 -e turbofan
-Cli { name: "B747", manufacturer: "Boeing", first_flight: 1964, engine_type: Turbofan }
 ```
-なお、`-e`オプションに与えることのできる引数は、`-h`で表示される文字列だけである。この文字列は列挙型のリテラルそのものとは限らないので注意する。
+$ cargo run -q -- real B747 -m Boeing -f 1964 -e turbofan
+ B747, Boeing, 1964, Turbofan
 
-```sh
+$ cargo run -q -- idea helicoptor -d "Da Vinci"
+helicoptor, Da Vinci
+```
+試しに`-h`オプションを与えてみると、情報が随分減っている。コマンドとヘルプ、そしてバージョン表示のオプションしかない。
+```
 $ cargo run -q -- -h
-Usage: aircraft [OPTIONS] <NAME>
+Demonstration of command/subcommand
 
-Arguments:
-  <NAME>  Name of airclaft
+Usage: aircraft <COMMAND>
+
+Commands:
+  real  Real aircraft
+  idea  Idea only
+  help  Print this message or the help of the given subcommand(s)
 
 Options:
-  -m, --manufacturer <MANUFACTURER>  Manufacturer of airclaft [default: ]
-  -f, --first-flight <FIRST_FLIGHT>  First flight year of airclaft [default: 1904]
-  -e, --engine-type <ENGINE_TYPE>    Engine type [default: reciprocating] [possible values: reciprocating, turboprop, turbojet, turbofan]
-  -h, --help                         Print help
-  -V, --version                      Print version
+  -h, --help     Print help (see more with '--help')
+  -V, --version  Print version
 ```
 
+より詳しい情報が欲しいときには、コマンドに続いて`-h`を与える。
 
+```
+$ cargo run -q -- real -h
+Real aircraft
+
+Usage: aircraft real [OPTIONS] <NAME>
+
+Arguments:
+  <NAME>  Name of aircraft
+
+Options:
+  -m, --manufacturer <MANUFACTURER>  Manufacturer of aircraft [default: ]
+  -f, --first-flight <FIRST_FLIGHT>  First flight year of aircraft [default: 1904]
+  -e, --engine-type <ENGINE_TYPE>    Engine type of aircraft [default: reciprocating] [possible values: reciprocating, turboprop, turbojet, turbofan]
+  -p, --pretty-print                 Pretty print mode
+  -h, --help                         Print help
+```
+```
+$ cargo run -q -- idea -h
+Idea only
+
+Usage: aircraft idea [OPTIONS] <NAME>
+
+Arguments:
+  <NAME>  Name of aircraft
+
+Options:
+  -d, --designer <DESIGNER>  Designer of aircraft [default: ]
+  -h, --help                 Print help
+```
