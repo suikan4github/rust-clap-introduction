@@ -9,24 +9,21 @@
 #[derive(Parser, Debug)]
 #[command(version)]
 struct Cli {
-    #[arg(help = "Name of airclaft", required = true)]
+    #[arg()]
     name: String,
 
-    #[arg(short, long, default_value = "", help = "Manufacturer of airclaft")]
+    #[arg(short, long, default_value = "")]
     manufacturer: String,
 
-    #[arg(
-        short,
-        long,
-        default_value_t = 1904,
-        help = "First flight year of airclaft"
-    )]
+    // 文字列以外のコマンドライン引数を解析する。
+    #[arg(short, long, default_value_t = 1904)]
+    /// First flight year of aircraft.
     first_flight: i32,
 }
 ```
-上の例では`first_flight`フィールドが属性`clap`の中に`default_value_t`を持っている。clapは`first_flight`の型が`i32`であることから、引数の文字列を符号付き整数型として解析する。
+上の例では`first_flight`フィールドが属性`#[arg]`の中に`default_value_t`を持っている。clapは`first_flight`の型が`i32`であることから、引数の文字列を符号付き整数型として解析する。
 
-`default_value_t`を使用しない場合、`clap`属性の中で`value_parser`を指定すると、やはり文字列以外の型として解析する。
+`default_value_t`を使用しない場合、`#[arg]`属性の中で`value_parser`を指定すると、やはり文字列以外の型として解析する。
 
 
 ## 実行

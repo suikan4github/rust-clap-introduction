@@ -2,7 +2,6 @@
 // Cargo.tomlに以下を追加する。
 // [dependencies]
 // clap = { version = "4.0", features = ["derive"] }
-// clapのderive機能を使うために、クレートのバージョンを4.0以上にする必要がある。
 
 // Parser トレイトを使って、コマンドライン引数を解析するための構造体を定義する。
 use clap::Parser;
