@@ -61,8 +61,9 @@ enum Commands {
     },
     /// Generate shell completion script.
     Complete {
-        /// Generate shell completion script.
+        // shellの種類を指定する。
         #[arg(short, long, value_enum)]
+        /// Generate shell completion script.
         shell: clap_complete::Shell,
     },
 }
@@ -116,13 +117,14 @@ fn main() {
             println!("{}, {}", name, designer);
         }
         Commands::Complete { shell } => {
-            // 補完ファイルを生成する。
+            // コマンドライン引数を解析するための構造体を生成する。
             let mut cmd = Cli::command();
+            // 補完ファイルを生成するシェルの種類を指定する。
             clap_complete::generate(
-                shell,
-                &mut cmd,
-                env!("CARGO_PKG_NAME"),
-                &mut std::io::stdout(),
+                shell,                  // シェルの種類
+                &mut cmd,               // コマンドライン引数情報
+                env!("CARGO_PKG_NAME"), // パッケージ名
+                &mut std::io::stdout(), // 出力先
             );
         }
     }

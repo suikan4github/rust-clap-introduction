@@ -1,81 +1,123 @@
 # シェル補完スクリプト
 
-列挙型に対応する引数の解析（パース）機能を追加する。
-
-CLIから文字列として与えられた引数を、対応する列挙型にマッピングする事が狙いである。
+CLIアプリケーションをシェルの補完に対応させるために、シェルスクリプトを生成する。
 
 ## ソースコード
 
-この例題はこれまでより少し大がかりな変更が入る。
+新たにclap_completeクレートを使用する。そこで、このクレートを`Cargo.toml`に追加する。
 
-まず、clapクレートのインポートが変わる。これまで`clap::Parser`のみをインポートしていたが、この例題では`clap::ValueEnum`も必要になる。
-```rust:main.rs
-use clap::{Parser, ValueEnum};
+```toml
+[dependencies]
+clap = { version = "4.x", features = ["derive"] }
+clap_complete = "4.x"
 ```
-次に、列挙型の宣言をする。この列挙型に対応する引数を解析するので、`derive`属性に`ValueEnum`を指定しておく。これで、clapは文字列を受け取ってこの列挙型の値にマッピングさせることを知る。
+
+
+クレートのインポートがもわる。これまで利用していたトレイトに加え、`clap::CommandFactory`が必要になる。また、`clap_complete`クレートも必要になる。
+```rust
+use clap::{CommandFactory as _, Parser, Subcommand, ValueEnum};
+use clap_complete;
+```
+
+`clap::CommandFactory`を`as _`としてインポートしているのは、トレイト名を直接使わないからである。一方で、このトレイトのメソッドを後で使うことになるのでインポート自体は必要である。`as _`無しでインポートしても問題なくビルドできるし動作する。
+
+
+最後にコマンドライン引数の列挙型に`Complete`を追加する。これはコマンドとして機能し、サブコマンドとして`shell : clap_complete::Shell`フィールドを持つ。clapはここから`-s`および`--shell`オプションを作る。`clap_complete::Shell`は列挙型である。
+
 ```rust:main.rs
-#[derive(Debug, Clone, ValueEnum)]
-enum EngineType {
-    Reciprocating,
-    Turboprop,
-    Turbojet,
-    Turbofan,
+#[derive(Subcommand, Debug)]
+enum Commands {
+    /// Real aircraft.
+    Real {
+      /// ...中略...
+    },
+    /// Idea only.
+    Idea {
+      /// ...中略...
+    },
+    /// Generate shell completion script.
+    Complete {
+        // shellの種類を指定する。
+        #[arg(short, long, value_enum)]
+        /// Generate shell completion script.
+        shell: clap_complete::Shell,
+    },
+}
+
+```
+main()関数では、match文に`Commands::Complete`を追加する。このアームでは与えられた引数のシェル種別に応じて補完用のシェルスクリプトを実行時に生成する。
+```rust
+fn main() {
+    // コマンドライン引数を解析する。
+    let cli = Cli::parse();
+
+    match cli.command {
+        Commands::Real 
+        /// ...中略...
+        Commands::Idea 
+        /// ...中略...
+        Commands::Complete { shell } => {
+            // コマンドライン引数を解析するための構造体を生成する。
+            let mut cmd = Cli::command();
+            // 補完ファイルを生成するシェルの種類を指定する。
+            clap_complete::generate(
+                shell,                  // シェルの種類
+                &mut cmd,               // コマンドライン引数情報
+                env!("CARGO_PKG_NAME"), // パッケージ名
+                &mut std::io::stdout(), // 出力先
+            );
+
+        }
+    }
 }
 ```
-最後にコマンドライン引数構造体に、先に宣言した列挙型のフィールドを追加する。この関数には`#[arg]`属性で、`value_enum`を指定することで、platに列挙型の値の解析を行うよう指示する。
+Commands::Completeアームの実行文は判じものなので、他のアプリケーションでもそのまま利用できる。以下にその内容を簡単に説明する。
 
-```rust:main.rs
-#[derive(Parser, Debug)]
-#[command(version)]
-struct Cli {
-    #[arg(help = "Name of airclaft")]
-    name: String,
-
-    #[arg(short, long, default_value = "", help = "Manufacturer of airclaft")]
-    manufacturer: String,
-
-    #[arg(
-        short,
-        long,
-        default_value_t = 1904,
-        help = "First flight year of airclaft"
-    )]
-    first_flight: i32,
-
-    // enum型のコマンドライン引数を解析する。
-    #[arg(short, long, value_enum, default_value_t = EngineType::Reciprocating,
-        help = "Engine type")]
-    engine_type: EngineType,
-}
+最初の文では、CLI引数を受け取るユーザー定義構造体Cliから、アプリケーションと引数の情報を生成している。`command()`メソッドは`clap::CommandFactory`トレイトで定義されたものであり、これを利用するために同トレイトをインポートしている。
+```rust
+            let mut cmd = Cli::command();
 ```
-上の例では`engin_type`フィールドが列挙型`EnginType`である。
+次の文ではユーザーが引数で選択したシェルの種別に応じてシェルスクリプトを生成しています。
+```rust
+            clap_complete::generate(
+                shell,                  // シェルの種類
+                &mut cmd,               // コマンドライン引数情報
+                env!("CARGO_PKG_NAME"), // パッケージ名
+                &mut std::io::stdout(), // 出力先
+            );
+```
+シェルの種類はユーザーが引数として渡したものです。
 
-clapはこの変数名から類推して`-e`および`--engine-type`オプションを作り出す。引数は列挙型のリテラルと同じ文字列である。
+コマンドライン引数情報は引数の値ではなくオプションの文字列や列挙型の情報をパックしたものです。この情報から`generate()`メソッドはシェルが補完するために必要な文字のリストなどを作り出します。
 
+パッケージ名はビルド環境からCargo.tomlのname情報を取り出しています。これは実行ファイル名と同じになります。
+
+出力先はこの例では標準出力を選んでいます。
 
 ## 実行
 
-引数を`-e`とともに与えると、その引数に対応する列挙型の値がengine_typeフィールドに束縛される。省略した場合は`default_value`として指定した`Reciprocating`が束縛される。
+シェル名を`complete -s `とともに与えると、シェル補完スクリプトが標準出力に出力される。これを補完ファイルに保存してしかるべき場所に置けばシェル補完が有効になる。
+
+bashの場合の例を挙げる。
 
 ```sh
-$ cargo run -q -- B747 -m Boeing -f 1964 -e turbofan
-Cli { name: "B747", manufacturer: "Boeing", first_flight: 1964, engine_type: Turbofan }
+$ cargo run -q -- complete -s bash > ~/.local/share/bash-completion/completions/aircraft.bash 
 ```
-なお、`-e`オプションに与えることのできる引数は、`-h`で表示される文字列だけである。この文字列は列挙型のリテラルそのものとは限らないので注意する。
+
+シェル補完スクリプトを保存したらシェルを再度開くか、以下のコマンドを実行する。
+```sh
+$ . ~/.local/share/bash-completion/completions/aircraft.bash 
+```
+
+これでシェル補完が使えるようになる。利用できるシェルの種類はヘルプ機能で表示させることができる。
 
 ```sh
-$ cargo run -q -- -h
-Usage: aircraft [OPTIONS] <NAME>
+$ target/debug/aircraft complete -h
+Generate shell completion script
 
-Arguments:
-  <NAME>  Name of airclaft
+Usage: aircraft complete --shell <SHELL>
 
 Options:
-  -m, --manufacturer <MANUFACTURER>  Manufacturer of airclaft [default: ]
-  -f, --first-flight <FIRST_FLIGHT>  First flight year of airclaft [default: 1904]
-  -e, --engine-type <ENGINE_TYPE>    Engine type [default: reciprocating] [possible values: reciprocating, turboprop, turbojet, turbofan]
-  -h, --help                         Print help
-  -V, --version                      Print version
+  -s, --shell <SHELL>  Generate shell completion script [possible values: bash, elvish, fish, powershell, zsh]
+  -h, --help           Print help
 ```
-
-
