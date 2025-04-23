@@ -7,18 +7,20 @@
 コマンドライン構造体の要素に`#[arg()]`属性を付け、かつ`required = true`を指定しない場合には省略可能な引数として扱われる。
 特に指定しない場合、引数の値は文字列として処理される。
 
-```rust:main.rs
+```rust
 #[derive(Parser, Debug)]
 #[command(version)]
 struct Cli {
-    #[arg(help = "Name of airclaft", required = true)]
+    #[arg()]
     name: String,
 
-    #[arg(short, long, default_value = "", help = "Manufacturer of airclaft")]
+    // 省略可能なコマンドライン文字列。
+    #[arg(short, long, default_value = "")]
+    /// Manufacturer of aircraft.
     manufacturer: String,
 }
 ```
-`clap()`属性に`short`および`long`を指定することで、clapはフィールド名から類推して短いオプションと長いオプションを生成する。この場合は以下のようになる。
+`#[arg]`属性に`short`および`long`を指定することで、clapはフィールド名から類推して短いオプションと長いオプションを生成する。この場合は以下のようになる。
 
 | フィールド名   | 短いオプション | 長いオプション |
 |-----          |---------   |------      |
@@ -35,22 +37,17 @@ struct Cli {
 
 引数を`-m`とともに与えると、manufacturerフィールドにその引数が文字列として束縛される。省略した場合は`default_value`として指定した空文字列が束縛される。
 
-```sh
-$ cargo run -q  -- B747 -m Boeing
-Cli { name: "B747", manufacturer: "Boeing" }
 ```
-
-ヘルプ画面には、`-m`および`--manufacturer`が追加される。
-
-```sh
 $ cargo run -q -- -h
+Demonstration of a optional arguments
+
 Usage: aircraft [OPTIONS] <NAME>
 
 Arguments:
-  <NAME>  Name of airclaft
+  <NAME>  Name of aircraft
 
 Options:
-  -m, --manufacturer <MANUFACTURER>  Manufacturer of airclaft
-  -h, --help                         Print help
+  -m, --manufacturer <MANUFACTURER>  Manufacturer of aircraft [default: ]
+  -h, --help                         Print help (see more with '--help')
   -V, --version                      Print version
 ```
