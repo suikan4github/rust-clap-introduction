@@ -4,8 +4,8 @@
 
 ## ソースコード
 
-コマンドライン構造体の要素に`#[arg()]`属性を付け、かつ`required = true`を指定しない場合には省略可能な引数として扱われる。
-特に指定しない場合、引数の値は文字列として処理される。
+コマンドライン構造体の要素に`#[arg()]`属性を付け、かつ`default_value`を指定した場合には省略可能な引数として扱われる。
+引数の値は文字列として処理される。
 
 ```rust
 #[derive(Parser, Debug)]
@@ -36,7 +36,11 @@ struct Cli {
 ## 実行
 
 引数を`-m`とともに与えると、manufacturerフィールドにその引数が文字列として束縛される。省略した場合は`default_value`として指定した空文字列が束縛される。
-
+```
+$ cargo run -q -- B747 -m Boeing
+Cli { name: "B747", manufacturer: "Boeing" }
+```
+`-h`オプションを指定すると、新たに追加した省略可能な引数が加わっている。
 ```
 $ cargo run -q -- -h
 Demonstration of a optional arguments
