@@ -5,7 +5,19 @@ Rustのclapクレートを使ってCLIの引数を解析（パース）する。
 - Ubuntu 24.04 (WSL)
 - rustc 1.86.0 
 - clap 4.5.37
+- clap_complete 4.5.47
 
+# 内容
+以下のサンプルプログラムを用意している。
+
+- [p0010](./p0010-version/README.md) : バージョン表示プログラム
+- [p0020](./p0020-required/README.md) :  必須引数
+- [p0030](./p0030-option/README.md) :  省略可能引数
+- [p0040](./p0040-integer/README.md) : 非文字列引数
+- [p0050](./p0050-enum/README.md) : 列挙型のための引数解析
+- [p0060](./p0060-switch/README.md) : 引数を持たないスイッチ
+- [p0070](./p0070-subcommand/README.md) : コマンドとサブコマンド
+- [p0080](./p0080-shell-completion/README.md) : シェル補完スクリプト
 
 # 準備
 Ubuntu 24.04の例。
