@@ -3,6 +3,7 @@ name = "aircraft"
 version = "0.3.0"
 authors = ["Seiichi Horie<mail.example.com>"]
 edition = "2021"
+description = "Demonstration of a optional arguments."
 
 [dependencies]
 clap = { version = "*", features = ["derive"] }

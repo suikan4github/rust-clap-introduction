@@ -18,12 +18,7 @@ enum EngineType {
 // derive(parser)属性を使ってコマンドライン引数の解析のためのコードを自動生成する。
 #[derive(Parser, Debug)]
 // command(version)属性を使って、コマンドラインに -V --version オプションを追加する。
-#[command(version)]
-// Doc コメントを使って、コマンドライン引数の説明をヘルプ情報に追加する。
-/// Demonstration of a typed arguments.
-///
-/// By adding value_enum to #[arg()] attribute, the field becomes an enum argument.
-/// The target enum Type must be with attribute #[derive(ValueEnum)].
+#[command(version, about)]
 struct Cli {
     // 省略できないコマンドライン文字列。Docコメントはヘルプ情報に追加される。
     #[arg()]

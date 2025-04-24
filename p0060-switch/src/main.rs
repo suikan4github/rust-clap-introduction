@@ -18,12 +18,7 @@ enum EngineType {
 // derive(parser)属性を使ってコマンドライン引数の解析のためのコードを自動生成する。
 #[derive(Parser, Debug)]
 // command(version)属性を使って、コマンドラインに -V --version オプションを追加する。
-#[command(version)]
-// Doc コメントを使って、コマンドライン引数の説明をヘルプ情報に追加する。
-/// Demonstration of a switch argument.
-///
-/// By using bool field with #[arg()] attribute, the field becomes a switch artument.
-/// Switch doesn't have any value. If not specified, the field value is false.
+#[command(version, about)]
 struct Cli {
     // 省略できないコマンドライン文字列。Docコメントはヘルプ情報に追加される。
     #[arg()]

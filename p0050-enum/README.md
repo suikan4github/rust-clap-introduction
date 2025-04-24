@@ -26,7 +26,7 @@ enum EngineType {
 
 ```rust:main.rs
 #[derive(Parser, Debug)]
-#[command(version)]
+#[command(version,about)]
 struct Cli {
     #[arg()]
     /// Name of aircraft.

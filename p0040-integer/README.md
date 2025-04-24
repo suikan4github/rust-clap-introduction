@@ -7,7 +7,7 @@
 省略可能な引数の属性でデフォルト値を指定する際、`default_value_t`を使用すると、引数を文字列型以外の値として解析する。
 ```rust:main.rs
 #[derive(Parser, Debug)]
-#[command(version)]
+#[command(version,about)]
 struct Cli {
     #[arg()]
     /// Name of aircraft.

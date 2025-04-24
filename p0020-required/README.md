@@ -7,7 +7,7 @@
 コマンドライン構造体の要素に`#[arg]`属性を与え、かつ省略時の値を指定しない場合には、省略不能な引数として扱われる。
 ```rust
 #[derive(Parser, Debug)]
-#[command(version)]
+#[command(version,about)]
 struct Cli {
     #[arg()]
     /// Name of aircraft.

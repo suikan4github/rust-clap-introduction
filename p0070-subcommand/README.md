@@ -76,7 +76,7 @@ enum Commands {
 
 ```rust
 #[derive(Parser, Debug)]
-#[command(version)]
+#[command(version,about)]
 struct Cli {
     // コマンドライン引数のサブコマンドを定義する。
     #[command(subcommand)]

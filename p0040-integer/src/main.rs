@@ -9,12 +9,7 @@ use clap::Parser;
 // derive(parser)属性を使ってコマンドライン引数の解析のためのコードを自動生成する。
 #[derive(Parser, Debug)]
 // command(version)属性を使って、コマンドラインに -V --version オプションを追加する。
-#[command(version)]
-// Doc コメントを使って、コマンドライン引数の説明をヘルプ情報に追加する。
-/// Demonstration of a typed arguments.
-///
-/// By adding default_value_t to #[arg()] attribute, the field becomes an typed argument.
-/// This optional argument can be an integer or boolean type.
+#[command(version, about)]
 struct Cli {
     // 省略できないコマンドライン文字列。Docコメントはヘルプ情報に追加される。
     #[arg()]

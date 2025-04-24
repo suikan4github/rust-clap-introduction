@@ -10,7 +10,7 @@
 
 ```rust
 #[derive(Parser, Debug)]
-#[command(version)]
+#[command(version,about)]
 struct Cli {
     #[arg()]
     /// Name of aircraft.

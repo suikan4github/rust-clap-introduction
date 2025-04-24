@@ -71,15 +71,8 @@ enum Commands {
 // derive(parser)属性を使ってコマンドライン引数の解析のためのコードを自動生成する。
 #[derive(Parser, Debug)]
 // command(version)属性を使って、コマンドラインに -V --version オプションを追加する。
-#[command(version)]
+#[command(version, about)]
 // コマンドライン引数を解析するための構造体を定義する。
-// Doc コメントを使って、コマンドライン引数の説明をヘルプ情報に追加する。
-/// Demonstration of command/subcommand.
-///
-/// By using `#[command(subcommand)]`, you can define subcommands.
-/// This program demonstrates how to use subcommands with clap.
-///
-/// To see the detail of the each command, try `aircraft <COMMAND> -h`.
 struct Cli {
     // コマンドライン引数のサブコマンドを定義する。
     #[command(subcommand)]
