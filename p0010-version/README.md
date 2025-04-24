@@ -30,7 +30,7 @@ use clap::Parser;
 `struct Cli`はコマンドライン引数を格納する構造体である。
 ```rust:main.rs
 #[derive(Parser, Debug)]
-#[command(version)]
+#[command(version, about)]
 /// Demonstration of the simple applicaiton with version and help.
 ///
 /// Without expliciit programming, the clap crate add -h and --help options.
@@ -40,13 +40,25 @@ struct Cli {}
 ```
 この構造体にはclapからふたつの属性が付加されている。
 
-`derive`属性は、この構造体のソースからコマンドライン引数をコンパイラが類推することを宣言している。
+`#[derive]`属性は、この構造体のソースからコマンドライン引数をコンパイラが類推することを宣言している。
 
-`command`属性は、このプログラムには`version`コマンドが引数として実装されるべきであることを宣言している。実装はclapが行うのでプログラマは何もしなくてよい。
+`#[command]`属性は、このプログラムには`version`コマンドが引数として実装されるべきであることを宣言している。バージョン情報はCargo.tomlから持って来る。実装はclapが行うのでプログラマは何もしなくてよい。
 
-ヘルプ機能に関してはデフォルトでclapが実装するのでプログラマは何もしなくてよい。
+また、`#[command]`属性は、`about`を宣言することでCargo.tomlのdescriptionから説明文を持って来ることを宣言している。ヘルプ機能に関してはデフォルトでclapが実装するのでプログラマは何もしなくてよい。
 
-Cli{}構造体にDocコメントが付けられていることに注意。このDocコメントはclapによってaboutおよびlong_about情報として使用される。about情報として扱われるのはDocコメントの最初の行である。1行開けて3行目からはlong_about情報として扱われる。
+Cli{}構造体にDocコメントを付けてヘルプに使用することも可能である。この場合、`#[command]`にaboutを宣言する必要はない。
+```rust:main.rs
+#[derive(Parser, Debug)]
+#[command(version)]
+/// Demonstration of the simple applicaiton with version and help.
+///
+/// Without expliciit programming, the clap crate add -h and --help options.
+/// The added help display is well formatted and easy to read.
+/// In addtion, the programmer can add -V and --version options explicitly.
+struct Cli {}
+```
+
+このDocコメントはclapによってaboutおよびlong_about情報として使用される。about情報として扱われるのはDocコメントの最初の行である。1行開けて3行目からはlong_about情報として扱われる。
 
 main()関数の以下の行は、コマンドライン引数を解析（パース）してCli構造体型の変数cliを生成している。
 ```rust:main.rs
@@ -81,8 +93,6 @@ Options:
 ```
 $ cargo run -q -- --help
 Demonstration of the simple applicaiton with version and help.
-
-Without expliciit programming, the clap crate add -h and --help options. The added help display is well formatted and easy to read. In addtion, the programmer can add -V and --version options explicitly.
 
 Usage: aircraft
 
