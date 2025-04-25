@@ -6,4 +6,4 @@ edition = "2021"
 description = "Demonstration of command/subcommand."
 
 [dependencies]
-clap = { version = "*", features = ["derive"] }
+clap = { version = "4.*", features = ["derive"] }
