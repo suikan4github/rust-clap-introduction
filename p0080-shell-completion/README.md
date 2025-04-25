@@ -22,7 +22,7 @@ use clap_complete;
 `clap::CommandFactory`を`as _`としてインポートしているのは、トレイト名を直接使わないからである。一方で、このトレイトのメソッドを後で使うことになるのでインポート自体は必要である。`as _`無しでインポートしても問題なくビルドできるし動作する。
 
 
-最後にコマンドライン引数の列挙型に`GenerateCompletion`を追加する。これはコマンドとして機能し、サブコマンドとして`shell : clap_complete::Shell`フィールドを持つ。clapはここから`-s`および`--shell`オプションを作る。`clap_complete::Shell`は列挙型である。
+最後にコマンドライン引数の列挙型に`GenerateShellCompletion`を追加する。これはコマンドとして機能し、サブコマンドとして`shell : clap_complete::Shell`フィールドを持つ。clapはここから`-s`および`--shell`オプションを作る。`clap_complete::Shell`は列挙型である。
 
 ```rust:main.rs
 #[derive(Subcommand, Debug)]
@@ -96,12 +96,12 @@ Commands::GenerateCompletionアームの実行文は定型文なので、他の�
 
 ## 実行
 
-シェル名を`generate-completion -s `とともに与えると、シェル補完スクリプトが標準出力に出力される。これを補完ファイルに保存してしかるべき場所に置けばシェル補完が有効になる。
+シェル名を`generate-shell-completion -s `とともに与えると、シェル補完スクリプトが標準出力に出力される。これを補完ファイルに保存してしかるべき場所に置けばシェル補完が有効になる。
 
 bashの場合の例を挙げる。
 
 ```sh
-$ cargo run -q -- generate-completion -s bash > ~/.local/share/bash-completion/completions/aircraft.bash 
+$ cargo run -q -- generate-shell-completion -s bash > ~/.local/share/bash-completion/completions/aircraft.bash 
 ```
 
 シェル補完スクリプトを保存したらシェルを再度開くか、以下のコマンドを実行する。
@@ -112,10 +112,10 @@ $ . ~/.local/share/bash-completion/completions/aircraft.bash
 これでシェル補完が使えるようになる。利用できるシェルの種類はヘルプ機能で表示させることができる。
 
 ```sh
-$ cargo run -q -- generate-completion -h
+$ cargo run -q -- generate-shell-completion -h
 Generate shell completion script
 
-Usage: aircraft generate-completion --shell <SHELL>
+Usage: aircraft generate-shell-completion --shell <SHELL>
 
 Options:
   -s, --shell <SHELL>  Generate shell completion script [possible values: bash, elvish, fish, powershell, zsh]

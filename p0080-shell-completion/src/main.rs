@@ -60,7 +60,7 @@ enum Commands {
         designer: String,
     },
     /// Generate shell completion script.
-    GenerateCompletion {
+    GenerateShellCompletion {
         // shellの種類を指定する。
         #[arg(short, long, value_enum)]
         /// Generate shell completion script.
@@ -109,7 +109,7 @@ fn main() {
         Commands::Idea { name, designer } => {
             println!("{}, {}", name, designer);
         }
-        Commands::GenerateCompletion { shell } => {
+        Commands::GenerateShellCompletion { shell } => {
             // コマンドライン引数を解析するための構造体を生成する。
             let mut cmd = Cli::command();
             // 補完ファイルを生成するシェルの種類を指定する。
