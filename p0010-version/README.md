@@ -11,7 +11,7 @@ Cargo.tomlは以下の通り。`[package]`の`version`は、プログラムの�
 [package]
 name = "aircraft"
 version = "0.1.0"
-authors = ["Seiichi Horie<mail.example.com>"]
+authors = ["Seiichi Horie<mail@example.com>"]
 edition = "2021"
 
 [dependencies]
