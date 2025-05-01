@@ -36,7 +36,7 @@ struct Cli {
     /// Manufacturer of aircraft.
     manufacturer: String,
 
-    #[arg(short, long, default_value_t = 1904)]
+    #[arg(short, long, default_value_t = 1903)]
     /// First flight year of aircraft.
     first_flight: i32,
 
@@ -95,7 +95,7 @@ Arguments:
 
 Options:
   -m, --manufacturer <MANUFACTURER>  Manufacturer of airclaft [default: ]
-  -f, --first-flight <FIRST_FLIGHT>  First flight year of airclaft [default: 1904]
+  -f, --first-flight <FIRST_FLIGHT>  First flight year of airclaft [default: 1903]
   -e, --engine-type <ENGINE_TYPE>    Engine type [default: reciprocating] [possible values: reciprocating, turboprop, turbojet, turbofan]
   -h, --help                         Print help
   -V, --version                      Print version

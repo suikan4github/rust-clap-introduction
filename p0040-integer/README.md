@@ -18,7 +18,7 @@ struct Cli {
     manufacturer: String,
 
     // 文字列以外のコマンドライン引数を解析する。
-    #[arg(short, long, default_value_t = 1904)]
+    #[arg(short, long, default_value_t = 1903)]
     /// First flight year of aircraft.
     first_flight: i32,
 }

@@ -46,7 +46,7 @@ enum Commands {
         /// Manufacturer of aircraft.
         manufacturer: String,
 
-        #[arg(short, long, default_value_t = 1904)]
+        #[arg(short, long, default_value_t = 1903)]
         /// First flight year of aircraft.
         first_flight: i32,
 
@@ -167,7 +167,7 @@ Arguments:
 
 Options:
   -m, --manufacturer <MANUFACTURER>  Manufacturer of aircraft [default: ]
-  -f, --first-flight <FIRST_FLIGHT>  First flight year of aircraft [default: 1904]
+  -f, --first-flight <FIRST_FLIGHT>  First flight year of aircraft [default: 1903]
   -e, --engine-type <ENGINE_TYPE>    Engine type of aircraft [default: reciprocating] [possible values: reciprocating, turboprop, turbojet, turbofan]
   -p, --pretty-print                 Pretty print mode
   -h, --help                         Print help
