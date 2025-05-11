@@ -22,7 +22,7 @@ use clap_complete;
 `clap::CommandFactory`を`as _`としてインポートしているのは、トレイト名を直接使わないからである。一方で、このトレイトのメソッドを後で使うことになるのでインポート自体は必要である。`as _`無しでインポートしても問題なくビルドできるし動作する。
 
 
-最後にコマンドライン引数の列挙型に`GenerateShellCompletion`を追加する。これはコマンドとして機能し、サブコマンドとして`shell : clap_complete::Shell`フィールドを持つ。clapはここから`-s`および`--shell`オプションを作る。`clap_complete::Shell`は列挙型である。
+最後にコマンドライン引数の列挙型に`GenerateShellCompletion`を追加する。これはサブコマンドとして機能し、オプションとして`shell : clap_complete::Shell`フィールドを持つ。clapはここから`-s`および`--shell`オプションを作る。`clap_complete::Shell`は列挙型である。
 
 ```rust:main.rs
 #[derive(Subcommand, Debug)]
