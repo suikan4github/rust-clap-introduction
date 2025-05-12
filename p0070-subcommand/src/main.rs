@@ -93,7 +93,7 @@ fn main() {
             } else {
                 // コマンドライン引数をそのまま表示する。
                 println!(
-                    " {}, {}, {}, {:?}",
+                    "{}, {}, {}, {:?}",
                     name, manufacturer, first_flight, engine_type
                 );
             }
