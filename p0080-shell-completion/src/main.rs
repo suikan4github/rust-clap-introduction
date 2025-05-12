@@ -110,9 +110,9 @@ fn main() {
             println!("{}, {}", name, designer);
         }
         Commands::GenerateShellCompletion { shell } => {
-            // コマンドライン引数を解析するための構造体を生成する。
+            // コマンドライン引数の体系をclapが解析するための構造体を生成する。
             let mut cmd = Cli::command();
-            // 補完ファイルを生成するシェルの種類を指定する。
+            // 保管用のshellスクリプトを生成する。
             clap_complete::generate(
                 shell,                  // シェルの種類
                 &mut cmd,               // コマンドライン引数情報
