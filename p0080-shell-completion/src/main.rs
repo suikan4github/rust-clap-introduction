@@ -2,6 +2,7 @@
 // Cargo.tomlに以下を追加する。
 // [dependencies]
 // clap = { version = "4.0", features = ["derive"] }
+// clap_complete = "4.x"
 
 // clapクレートは、コマンドライン引数を解析するためのライブラリ。
 use clap::{CommandFactory as _, Parser, Subcommand, ValueEnum};
@@ -19,7 +20,7 @@ enum EngineType {
 // derive(subcommand)属性を使って、コマンドライン引数の解析のためのコードを自動生成する。
 #[derive(Subcommand, Debug)]
 enum Commands {
-    /// Real aircraft.
+    /// 実在の飛行機。
     Real {
         // 省略できないコマンドライン文字列。Docコメントはヘルプ情報に追加される。
         #[arg()]
@@ -47,7 +48,7 @@ enum Commands {
         /// Pretty print mode.
         pretty_print: bool,
     },
-    /// Idea only.
+    /// 空想上の飛行機。
     Idea {
         // 省略できないコマンドライン文字列。
         #[arg()]
@@ -59,11 +60,11 @@ enum Commands {
         /// Designer of aircraft.
         designer: String,
     },
-    /// Generate shell completion script.
+    /// シェルの補完スクリプトを生成する。
     GenerateShellCompletion {
         // shellの種類を指定する。
         #[arg(short, long, value_enum)]
-        /// Generate shell completion script.
+        /// shell type.
         shell: clap_complete::Shell,
     },
 }
