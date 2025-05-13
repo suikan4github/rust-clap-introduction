@@ -18,7 +18,7 @@ enum EngineType {
 // derive(subcommand)属性を使って、コマンドライン引数の解析のためのコードを自動生成する。
 #[derive(Subcommand, Debug)]
 enum Commands {
-    /// Real aircraft.
+    /// 実在の飛行機。
     Real {
         // 省略できないコマンドライン文字列。Docコメントはヘルプ情報に追加される。
         #[arg()]
@@ -46,7 +46,7 @@ enum Commands {
         /// Pretty print mode.
         pretty_print: bool,
     },
-    /// Idea only.
+    /// 空想上の飛行機。
     Idea {
         // 省略できないコマンドライン文字列。
         #[arg()]
