@@ -15,7 +15,7 @@ struct Cli {
     /// Name of aircraft
     name: String,
 
-    // 省略可能なコマンドライン文字列。
+    // 省略可能なコマンドライン引数。
     #[arg(short, long, default_value = "")]
     /// Manufacturer of aircraft.
     manufacturer: String,

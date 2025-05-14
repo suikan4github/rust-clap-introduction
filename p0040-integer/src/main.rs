@@ -11,12 +11,12 @@ use clap::Parser;
 // command(version)属性を使って、コマンドラインに -V --version オプションを追加する。
 #[command(version, about)]
 struct Cli {
-    // 省略できないコマンドライン文字列。Docコメントはヘルプ情報に追加される。
+    // 省略できないコマンドライン引数。Docコメントはヘルプ情報に追加される。
     #[arg()]
     /// Name of aircraft.
     name: String,
 
-    // 省略可能なコマンドライン文字列。
+    // 省略可能なコマンドライン引数。
     #[arg(short, long, default_value = "")]
     /// Manufacturer of aircraft.
     manufacturer: String,

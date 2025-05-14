@@ -22,12 +22,12 @@ enum EngineType {
 enum Commands {
     /// 実在の飛行機。
     Real {
-        // 省略できないコマンドライン文字列。Docコメントはヘルプ情報に追加される。
+        // 省略できないコマンドライン引数。Docコメントはヘルプ情報に追加される。
         #[arg()]
         /// Name of aircraft.
         name: String,
 
-        // 省略可能なコマンドライン文字列。
+        // 省略可能なコマンドライン引数。
         #[arg(short, long, default_value = "")]
         /// Manufacturer of aircraft.
         manufacturer: String,
@@ -50,12 +50,12 @@ enum Commands {
     },
     /// 空想上の飛行機。
     Idea {
-        // 省略できないコマンドライン文字列。
+        // 省略できないコマンドライン引数。
         #[arg()]
         /// Name of aircraft.
         name: String,
 
-        // 省略可能なコマンドライン文字列。
+        // 省略可能なコマンドライン引数。
         #[arg(short, long, default_value = "")]
         /// Designer of aircraft.
         designer: String,
