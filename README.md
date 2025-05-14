@@ -16,7 +16,7 @@ Rustのclapクレートを使ってCLIの引数を解析（パース）する。
 - [p0040](./p0040-integer/README.md) : 整数引数
 - [p0050](./p0050-enum/README.md) : 列挙型のための引数解析
 - [p0060](./p0060-switch/README.md) : 引数を持たないスイッチ
-- [p0070](./p0070-subcommand/README.md) : コマンドとサブコマンド
+- [p0070](./p0070-subcommand/README.md) : サブコマンド
 - [p0080](./p0080-shell-completion/README.md) : シェル補完スクリプト
 
 # 準備
