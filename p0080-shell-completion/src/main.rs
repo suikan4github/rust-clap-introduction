@@ -5,7 +5,7 @@
 // clap_complete = "4.x"
 
 // clapクレートは、コマンドライン引数を解析するためのライブラリ。
-use clap::{CommandFactory as _, Parser, Subcommand, ValueEnum};
+use clap::{CommandFactory, Parser, Subcommand, ValueEnum};
 use clap_complete;
 
 // enum型のコマンドライン引数を定義する。
