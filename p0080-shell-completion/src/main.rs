@@ -113,7 +113,7 @@ fn main() {
         Commands::GenerateShellCompletion { shell } => {
             // コマンドライン引数の体系をclapが解析するための構造体を生成する。
             let mut cmd = Cli::command();
-            // 保管用のshellスクリプトを生成する。
+            // 補完用のshellスクリプトを生成する。
             clap_complete::generate(
                 shell,                  // シェルの種類
                 &mut cmd,               // コマンドライン引数情報
