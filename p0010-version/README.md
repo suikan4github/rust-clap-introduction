@@ -31,7 +31,7 @@ use clap::Parser;
 ```rust:main.rs
 #[derive(Parser, Debug)]
 #[command(version, about)]
-/// Demonstration of the simple applicaiton with version and help.
+/// Demonstration of the simple  with version and help.
 ///
 /// Without expliciit programming, the clap crate add -h and --help options.
 /// The added help display is well formatted and easy to read.
@@ -50,7 +50,7 @@ Cli{}構造体にDocコメントを付けてヘルプに使用することも可
 ```rust:main.rs
 #[derive(Parser, Debug)]
 #[command(version)]
-/// Demonstration of the simple applicaiton with version and help.
+/// Demonstration of the simple  with version and help.
 ///
 /// Without expliciit programming, the clap crate add -h and --help options.
 /// The added help display is well formatted and easy to read.
@@ -79,7 +79,7 @@ aircraft 0.1.0
 
 ```
 $ cargo run -q -- -h
-Demonstration of the simple applicaiton with version and help
+Demonstration of the simple  with version and help
 
 Usage: aircraft
 
@@ -92,7 +92,7 @@ Options:
 
 ```
 $ cargo run -q -- --help
-Demonstration of the simple applicaiton with version and help.
+Demonstration of the simple  with version and help.
 
 Usage: aircraft
 
